@@ -38,7 +38,22 @@ import sys
 
 
 def decrypt(encryption: str) -> str:
-    ...
+    stack = []
+    i = 0
+    while i < len(encryption):
+        if encryption[i] != '.':
+            stack.append(encryption[i])
+            i += 1
+        else:
+            dot_count = 0
+            while i < len(encryption) and encryption[i] == '.':
+                dot_count += 1
+                i += 1
+            pairs = dot_count // 2
+            for _ in range(pairs):
+                if stack:
+                    stack.pop()
+    return ''.join(stack)
 
 
 if __name__ == '__main__':
