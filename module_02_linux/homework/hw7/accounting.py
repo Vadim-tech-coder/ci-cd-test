@@ -21,17 +21,38 @@ storage = {}
 
 @app.route("/add/<date>/<int:number>")
 def add(date: str, number: int):
-    ...
+    year = date[0:4]
+    month = date[4:6]
+    storage.setdefault(year, {}).setdefault(month, 0)
+    storage.setdefault(year, {}).setdefault('total', 0)
+    storage[year][month] += number
+    storage[year]['total'] += number
+    return "Траты в сумме: {} записаны в год {} месяц {} {}".format(number,
+                                                                       year,
+                                                                       month,
+                                                                 storage)
 
 
 @app.route("/calculate/<int:year>")
 def calculate_year(year: int):
-    ...
+    print(storage)
+    year_data = storage.get(str(year))
+    if year_data is None:
+        return "Данные за {} год отсутствуют!".format(year)
+    return "Траты за {} год: {} рублей.".format(year, year_data.get('total', 0))
 
 
 @app.route("/calculate/<int:year>/<int:month>")
 def calculate_month(year: int, month: int):
-    ...
+    year_data = storage.get(str(year))
+    if month < 10:
+        month = "0" + str(month)
+    if year_data is None:
+        return "Данные за {} год отсутствуют!".format(year)
+    month_data = year_data.get(str(month))
+    if month_data is None:
+        return "Данные за {} месяц отсутствуют!".format(month)
+    return "Траты за год {} месяц {}: {}".format(year, month, month_data)
 
 
 if __name__ == "__main__":
