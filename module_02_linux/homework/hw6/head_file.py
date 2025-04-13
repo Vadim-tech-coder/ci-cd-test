@@ -25,6 +25,7 @@ hello wo
 /home/user/module_2/docs/simple.txt 12
 hello world!
 """
+import os.path
 
 from flask import Flask
 
@@ -33,7 +34,19 @@ app = Flask(__name__)
 
 @app.route("/head_file/<int:size>/<path:relative_path>")
 def head_file(size: int, relative_path: str):
-    ...
+    path = os.path.abspath(os.path.join(relative_path))
+    try:
+        with open(path, 'r', encoding='utf8') as file:
+            result_text = file.read(size)
+            abs_path = path
+            result_size = len(result_text)
+            status_code = 200
+        return "Абсолютный путь к файлу: {}<br>Количество символов в превью: {}<br>Превью: {}".format(abs_path,
+                                                                                                  result_size,
+                                                                                                  result_text), status_code
+    except FileNotFoundError as err_details:
+        status_code = 404
+        return "Ошибка: " + str(err_details), status_code
 
 
 if __name__ == "__main__":
