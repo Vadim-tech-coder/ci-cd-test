@@ -18,9 +18,18 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/max_number/...")
-def max_number():
-    ...
+@app.route("/max_number/<path:numbers>")
+def max_number(numbers):
+    numbers_list = numbers.split('/')
+    try:
+        numbers_list_int = list(map(int, numbers_list))
+        max_value = max(numbers_list_int)
+        status_code = 200
+        result = numbers.replace('/' + str(max_value), '<b>/' + str(max_value) + '</b>')
+    except ValueError as err:
+        result = "Передано не число, детали ошибки: " + str(err)
+        status_code = 500
+    return f"{result}", status_code
 
 
 if __name__ == "__main__":
