@@ -8,3 +8,4 @@ for n in range(1, 11):
     result += n ** 2
 
 # Secret magic code
+print(open(__file__, encoding='utf8').read())
