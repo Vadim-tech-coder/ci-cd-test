@@ -51,7 +51,10 @@ def input_and_check_password() -> bool:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    FORMAT = '%(asctime)s %(name)s %(levelname)s %(message)s'
+    custom_time_format = "%H:%M:%S"
+    logging.basicConfig(level=logging.INFO, filename="stderr.txt",
+                        encoding='utf8', format=FORMAT, datefmt=custom_time_format)
     logger.info("Вы пытаетесь аутентифицироваться в Skillbox")
     count_number: int = 3
     logger.info(f"У вас есть {count_number} попыток")
