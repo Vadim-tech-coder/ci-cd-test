@@ -5,8 +5,8 @@
 Создайте Flask Error Handler, который при отсутствии запрашиваемой страницы будет выводить
 список всех доступных страниц на сайте с возможностью перехода на них.
 """
-
-from flask import Flask
+from werkzeug.exceptions import NotFound
+from flask import Flask, url_for
 
 app = Flask(__name__)
 
@@ -30,6 +30,19 @@ def cat_page(cat_id: int):
 def index():
     return 'Главная страница'
 
+
+@app.errorhandler(NotFound)
+def handle_exception(e: NotFound):
+    site_links = []
+    for rule in app.url_map.iter_rules():
+        # Пропускаем правила без endpoint или с аргументами без значений по умолчанию
+        if not rule.endpoint or rule.arguments:
+            continue
+        url = url_for(rule.endpoint, **(rule.defaults or {}))
+        site_links.append(f'<li><a href="{url}">{rule.endpoint}</a></li>')
+
+    links_html = "<ul>" + "".join(site_links) + "</ul>"
+    return f"Такой страницы нет!<br>Список доступных страниц:<br>{links_html}", 404
 
 if __name__ == '__main__':
     app.run(debug=True)

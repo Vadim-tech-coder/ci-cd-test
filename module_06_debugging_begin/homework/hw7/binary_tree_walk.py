@@ -18,6 +18,7 @@ def restore_tree(path_to_log_file: str) -> BinaryTreeNode:
 import itertools
 import logging
 import random
+import re
 from collections import deque
 from dataclasses import dataclass
 from typing import Optional
@@ -71,7 +72,30 @@ def get_tree(max_depth: int, level: int = 1) -> Optional[BinaryTreeNode]:
 
 
 def restore_tree(path_to_log_file: str) -> BinaryTreeNode:
-    pass
+    pattern = r'\[(.*?)\]'
+    parent_node_num = None
+    tree = {}
+    with open(path_to_log_file, 'r', encoding='utf8') as file:
+        file_list = file.readlines()
+        for line in file_list:
+            if line.startswith('INFO'):
+                node_num = int(re.search(pattern, line).group(1))
+                if node_num not in tree:
+                    tree[node_num] = BinaryTreeNode(node_num)
+                parent_node_num = node_num
+
+            elif line.startswith('DEBUG'):
+                child_num  = int(re.findall(pattern, line)[1])
+                if child_num not in tree:
+                    tree[child_num] = BinaryTreeNode(val = child_num)
+                if 'left' in line:
+                    tree[parent_node_num].left = tree[child_num]
+                elif 'right' in line:
+                    tree[parent_node_num].right = tree[child_num]
+    root_num = int(re.search(pattern, file_list[0]).group(1))
+    root = tree[root_num]
+    # print(f"Узел: {tree[245611]}, правый потомок: {tree[245611].right}, левый потомок: {tree[245611].left}")
+    return root
 
 
 if __name__ == "__main__":
@@ -83,3 +107,4 @@ if __name__ == "__main__":
 
     root = get_tree(7)
     walk(root)
+    print(restore_tree('walk_log_2.txt'))
