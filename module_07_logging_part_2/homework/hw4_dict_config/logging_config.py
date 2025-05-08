@@ -1,3 +1,5 @@
+import logging.handlers
+
 from module_07_logging_part_2.homework.hw1_add_logging.handlers import LevelFileHandler
 
 dict_config = {
@@ -27,12 +29,26 @@ dict_config = {
             "filename": "calc_error.log",
             "mode": "a",
             "formatter":"base"
+        },
+
+        "file_info":{
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "INFO",
+            "filename": "utils.log",
+            "formatter":"base",
+            "when":"s",
+            "interval": 10,
+            "backupCount": 5
         }
     },
     "loggers":{
         "diff_logger":{
             "level": "DEBUG",
             "handlers": ["file_debug", "file_error", "console"]
+            },
+        "info_logger":{
+            "level": "INFO",
+            "handlers": ["file_info", "console"]
             }
         }
     }

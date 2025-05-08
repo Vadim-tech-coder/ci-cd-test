@@ -15,3 +15,14 @@ def get_logger(name):
     logger = logging.getLogger(f"diff_logger.{name}")
     return logger
 
+
+
+def get_logger_info(name):
+    # logging.basicConfig(
+    #     format = '%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s',
+    #     level = 'DEBUG',
+    #     handlers=[LevelFileHandler('logger.log'), logging.StreamHandler()]
+    # )
+    logging.config.dictConfig(dict_config)
+    logger = logging.getLogger(f"info_logger.{name}")
+    return logger
