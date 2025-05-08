@@ -1,9 +1,10 @@
 import sys
 
+import logging_tree
+
 from module_07_logging_part_2.homework.hw3_level_file_handler.logger_helper import get_logger
 from utils import string_to_operator
-import logging
-
+from logging_tree import printout
 
 
 # logging.basicConfig()
@@ -12,6 +13,7 @@ import logging
 # main_logger.propagate = False
 
 main_logger = get_logger('main')
+# printout()
 
 # handler = logging.StreamHandler(sys.stdout)
 # handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
@@ -58,3 +60,5 @@ def calc(args):
 if __name__ == '__main__':
     # calc(sys.argv[1:])
     calc('2%3')
+    with open('logging_tree.txt', mode='w', encoding='utf8') as tree_file:
+        tree_file.write(logging_tree.format.build_description())
