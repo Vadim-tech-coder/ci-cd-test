@@ -5,6 +5,7 @@ from utils import string_to_operator
 import logging
 
 
+
 # logging.basicConfig()
 # main_logger = logging.getLogger('main_logger')
 # main_logger.setLevel('DEBUG')
@@ -18,6 +19,7 @@ main_logger = get_logger('main')
 
 
 def calc(args):
+    # print(main_logger.handlers)
     main_logger.info(f"Arguments: {args}")
     # print("Arguments: ", args)
 

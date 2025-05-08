@@ -33,6 +33,7 @@ def string_to_operator(value: str) -> Callable[[Numeric, Numeric], Numeric]:
     Convert string to arithmetic function
     :param value: basic arithmetic function
     """
+    # print(utils_logger.handlers)
     if not isinstance(value, str):
         utils_logger.error(f"wrong operator type: {value}")
         # print("wrong operator type", value)
