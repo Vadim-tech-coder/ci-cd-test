@@ -1,15 +1,20 @@
 import sys
+
+from module_07_logging_part_2.homework.hw3_level_file_handler.logger_helper import get_logger
 from utils import string_to_operator
 import logging
 
-logging.basicConfig()
-main_logger = logging.getLogger('main_logger')
-main_logger.setLevel('DEBUG')
-main_logger.propagate = False
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
-main_logger.addHandler(handler)
+# logging.basicConfig()
+# main_logger = logging.getLogger('main_logger')
+# main_logger.setLevel('DEBUG')
+# main_logger.propagate = False
+
+main_logger = get_logger('main')
+
+# handler = logging.StreamHandler(sys.stdout)
+# handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
+# main_logger.addHandler(handler)
 
 
 def calc(args):
