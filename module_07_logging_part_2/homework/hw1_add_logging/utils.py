@@ -39,6 +39,7 @@ def string_to_operator(value: str) -> Callable[[Numeric, Numeric], Numeric]:
     utils_logger.debug("utils_logger DEBUG")
     utils_logger.error("utils_logger ERROR")
     utils_logger.critical("utils_logger CRITICAL")
+    utils_logger.info("йцукен")
     # print(utils_logger.handlers)
     if not isinstance(value, str):
         utils_logger.error(f"wrong operator type: {value}")

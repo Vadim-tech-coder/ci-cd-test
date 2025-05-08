@@ -1,4 +1,5 @@
 import logging
+from logging import LogRecord
 
 
 class LevelFileHandler(logging.FileHandler):
@@ -16,3 +17,9 @@ class LevelFilter(logging.Filter):
 
     def filter(self, record):
         return record.levelno == self.level
+
+class ASCIIFilter(logging.Filter):
+    def filter(self, record: LogRecord) -> bool:
+        if record.msg.isascii():
+            return True
+        return False

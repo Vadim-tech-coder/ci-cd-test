@@ -1,6 +1,6 @@
 import logging.handlers
 
-from module_07_logging_part_2.homework.hw1_add_logging.handlers import LevelFileHandler
+from module_07_logging_part_2.homework.hw1_add_logging.handlers import LevelFileHandler, ASCIIFilter
 
 dict_config = {
     "version": 1,
@@ -14,6 +14,7 @@ dict_config = {
         "console":{
             "class": "logging.StreamHandler",
             "level": "DEBUG",
+            "filters": ["ascii_filter",],
             "formatter":"base"
         },
         "file_debug":{
@@ -37,9 +38,15 @@ dict_config = {
             "filename": "utils.log",
             "formatter":"base",
             "when":"s",
+            "filters": ["ascii_filter",],
             "interval": 10,
             "backupCount": 5
         }
+    },
+    "filters":{
+      "ascii_filter":{
+          "()": ASCIIFilter,
+      }
     },
     "loggers":{
         "diff_logger":{
