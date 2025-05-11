@@ -13,7 +13,7 @@ from logging_tree import printout
 # main_logger.propagate = False
 
 main_logger = get_logger('main')
-# printout()
+printout()
 
 # handler = logging.StreamHandler(sys.stdout)
 # handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))

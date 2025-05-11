@@ -11,6 +11,14 @@ dict_config = {
         }
     },
     "handlers":{
+        "http_handler": {
+            "class": "logging.handlers.HTTPHandler",
+            "level": "DEBUG",
+            "host":"127.0.0.1:5000",
+            "url":"/log",
+            "method": "POST",
+            "formatter": "base"
+        },
         "console":{
             "class": "logging.StreamHandler",
             "level": "DEBUG",
@@ -51,7 +59,7 @@ dict_config = {
     "loggers":{
         "diff_logger":{
             "level": "DEBUG",
-            "handlers": ["file_debug", "file_error", "console"]
+            "handlers": ["file_debug", "file_error", "console", "http_handler"]
             },
         "info_logger":{
             "level": "INFO",
