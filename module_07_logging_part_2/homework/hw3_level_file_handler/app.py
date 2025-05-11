@@ -1,15 +1,14 @@
-import sys
+from logger_helper import debug_handler, error_handler
 from utils import string_to_operator
 import logging
 
-logging.basicConfig()
-main_logger = logging.getLogger('main_logger')
-main_logger.setLevel('DEBUG')
-main_logger.propagate = False
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
-main_logger.addHandler(handler)
+
+main_logger = logging.getLogger('main')
+main_logger.setLevel('DEBUG')
+main_logger.addHandler(debug_handler)
+main_logger.addHandler(error_handler)
+
 
 
 def calc(args):

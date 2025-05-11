@@ -1,5 +1,5 @@
 import logging
-
+import sys
 
 class CustomFileHandler(logging.Handler):
 
@@ -11,10 +11,15 @@ class CustomFileHandler(logging.Handler):
     def emit(self, record: logging.LogRecord) -> None:
         message = self.format(record)
         with open(self.file_name, mode=self.mode) as f:
-            f.write(message + '\n')
+            f.write(message + str(vars(record)) + '\n')
 
 
+class CustomStreamHandler(logging.StreamHandler):
 
+    def __init__(self, stream=None):
+        if stream is None:
+            stream = sys.stderr
+        super().__init__(stream)
 
 
 dict_config = {
@@ -26,8 +31,8 @@ dict_config = {
         }
     },
     "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
+        "custom_handler": {
+            "()": CustomStreamHandler,
             "level": "DEBUG",
             "formatter": "base"
         },
@@ -42,7 +47,7 @@ dict_config = {
     "loggers": {
         "module_logger": {
             "level": "DEBUG",
-            "handlers": ["file", "console"],
+            "handlers": ["file", "custom_handler"],
             # "propagate": False,
         }
     },
