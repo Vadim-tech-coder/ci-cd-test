@@ -1,17 +1,27 @@
 import sys
-import logging
 
-from module_07_logging_part_2.homework.base_code_default.utils import string_to_operator
+import logging_tree
 
-main_logger = logging.getLogger('main_logger')
-main_logger.setLevel('DEBUG')
+from module_07_logging_part_2.homework.hw3_level_file_handler.logger_helper import get_logger
+from utils import string_to_operator
+from logging_tree import printout
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('%(levelname)s - %(module)s - %(message)s'))
-main_logger.addHandler(handler)
+
+# logging.basicConfig()
+# main_logger = logging.getLogger('main_logger')
+# main_logger.setLevel('DEBUG')
+# main_logger.propagate = False
+
+main_logger = get_logger('main')
+printout()
+
+# handler = logging.StreamHandler(sys.stdout)
+# handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
+# main_logger.addHandler(handler)
 
 
 def calc(args):
+    # print(main_logger.handlers)
     main_logger.info(f"Arguments: {args}")
     # print("Arguments: ", args)
 
@@ -50,3 +60,5 @@ def calc(args):
 if __name__ == '__main__':
     # calc(sys.argv[1:])
     calc('2%3')
+    with open('logging_tree.txt', mode='w', encoding='utf8') as tree_file:
+        tree_file.write(logging_tree.format.build_description())

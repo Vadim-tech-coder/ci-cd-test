@@ -1,54 +1,52 @@
 import sys
-from typing import Union, Callable
-from operator import sub, mul, truediv, add
 import logging
-from module_07_logging_part_2.homework.hw3_level_file_handler.logger_helper import get_logger, get_logger_info
 
-# logging.basicConfig()
-# utils_logger = logging.getLogger('utils_logger')
-# utils_logger.setLevel('DEBUG')
-# utils_logger.propagate = False
+from module_07_logging_part_2.homework.base_code_default.utils import string_to_operator
 
-utils_logger = get_logger_info('utils')
+main_logger = logging.getLogger('main_logger')
+main_logger.setLevel('DEBUG')
 
-
-
-# handler = logging.StreamHandler(sys.stdout)
-# handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
-# utils_logger.addHandler(handler)
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(logging.Formatter('%(levelname)s - %(module)s - %(message)s'))
+main_logger.addHandler(handler)
 
 
+def calc(args):
+    main_logger.info(f"Arguments: {args}")
+    # print("Arguments: ", args)
 
-OPERATORS = {
-    '+': add,
-    '-': sub,
-    '*': mul,
-    '/': truediv,
-}
+    num_1 = args[0]
+    operator = args[1]
+    num_2 = args[2]
 
-Numeric = Union[int, float]
+    try:
+        num_1 = float(num_1)
+    except ValueError as e:
+        main_logger.error("Error while converting number 1", exc_info = e)
+        # print("Error while converting number 1")
+        # print(e)
+
+    try:
+        num_2 = float(num_2)
+    except ValueError as e:
+        main_logger.error("Error while converting number 2", exc_info = e)
+        # print("Error while converting number 2")
+        # print(e)
+
+    try:
+        operator_func = string_to_operator(operator)
+        result = operator_func(num_1, num_2)
+        main_logger.info(f"Result: {result}")
+        # print("Result: ", result)
+        print(f"{num_1} {operator} {num_2} = {result}")
+    except Exception as e:
+        main_logger.error("Critical error", exc_info=True)
 
 
-def string_to_operator(value: str) -> Callable[[Numeric, Numeric], Numeric]:
-    """
-    Convert string to arithmetic function
-    :param value: basic arithmetic function
-    """
-    utils_logger.info("utils_logger INFO")
-    utils_logger.warning("utils_logger WARNING")
-    utils_logger.debug("utils_logger DEBUG")
-    utils_logger.error("utils_logger ERROR")
-    utils_logger.critical("utils_logger CRITICAL")
-    utils_logger.info("йцукен")
-    # print(utils_logger.handlers)
-    if not isinstance(value, str):
-        utils_logger.error(f"wrong operator type: {value}")
-        # print("wrong operator type", value)
-        raise ValueError("wrong operator type")
 
-    if value not in OPERATORS:
-        utils_logger.error(f"wrong operator value: {value}",  exc_info=False)
-        # print("wrong operator value", value)
-        raise ValueError("wrong operator value")
 
-    return OPERATORS[value]
+
+
+if __name__ == '__main__':
+    # calc(sys.argv[1:])
+    calc('2%3')

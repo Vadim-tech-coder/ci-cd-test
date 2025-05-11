@@ -11,6 +11,10 @@
    |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s' datefmt=None
    |   Handler Stream <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>
    |     Level DEBUG
+   |     Filter <module_07_logging_part_2.homework.hw1_add_logging.handlers.ASCIIFilter object at 0x000001D8E4C6FF50>
+   |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s' datefmt=None
+   |   Handler HTTP POST to http://127.0.0.1:5000//log
+   |     Level DEBUG
    |     Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s' datefmt=None
    |   |
    |   o<--"diff_logger.main"
@@ -20,9 +24,11 @@
        Level INFO
        Handler TimedRotatingFile 'C:\\Users\\khambaleevvv\\python_advanced\\module_07_logging_part_2\\homework\\hw1_add_logging\\utils.log' when='S' interval=10 backupCount=5
          Level INFO
+         Filter <module_07_logging_part_2.homework.hw1_add_logging.handlers.ASCIIFilter object at 0x000001D8E4C6FF50>
          Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s' datefmt=None
        Handler Stream <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>
          Level DEBUG
+         Filter <module_07_logging_part_2.homework.hw1_add_logging.handlers.ASCIIFilter object at 0x000001D8E4C6FF50>
          Formatter fmt='%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s' datefmt=None
        |
        o<--"info_logger.utils"
