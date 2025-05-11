@@ -1,12 +1,28 @@
 import logging
 import sys
-
-
-class LevelFileHandler(logging.Handler):
-    ...
+from module_07_logging_part_2.homework.hw4_dict_config.logging_config import dict_config
+from module_07_logging_part_2.homework.hw1_add_logging.handlers import LevelFileHandler
+from logging import config
 
 
 def get_logger(name):
-    ...
+    # logging.basicConfig(
+    #     format = '%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s',
+    #     level = 'DEBUG',
+    #     handlers=[LevelFileHandler('logger.log'), logging.StreamHandler()]
+    # )
+    logging.config.dictConfig(dict_config)
+    logger = logging.getLogger(f"diff_logger.{name}")
     return logger
 
+
+
+def get_logger_info(name):
+    # logging.basicConfig(
+    #     format = '%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s',
+    #     level = 'DEBUG',
+    #     handlers=[LevelFileHandler('logger.log'), logging.StreamHandler()]
+    # )
+    logging.config.dictConfig(dict_config)
+    logger = logging.getLogger(f"info_logger.{name}")
+    return logger
