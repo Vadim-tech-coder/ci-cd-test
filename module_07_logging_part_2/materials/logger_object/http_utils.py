@@ -3,7 +3,7 @@ import time
 
 import requests
 
-logger = logging.getLogger('http_utils')
+logger = logging.getLogger('utils_logger.http_utils')
 
 GET_IP_URL = 'https://api.ipify.org?format=json'
 

@@ -1,17 +1,20 @@
-import sys
+import logging_tree
+from logging_tree import printout
+from logging_config import dict_config
+from logging import config
 import logging
 
+
+config.dictConfig(dict_config)
+
+from logger_helper import get_logger, get_logger_info
 from module_07_logging_part_2.homework.base_code_default.utils import string_to_operator
 
-main_logger = logging.getLogger('main_logger')
-main_logger.setLevel('DEBUG')
-
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('%(levelname)s - %(module)s - %(message)s'))
-main_logger.addHandler(handler)
-
+main_logger = get_logger('main')
+printout()
 
 def calc(args):
+    # print(main_logger.handlers)
     main_logger.info(f"Arguments: {args}")
     # print("Arguments: ", args)
 
@@ -44,9 +47,8 @@ def calc(args):
 
 
 
-
-
-
 if __name__ == '__main__':
     # calc(sys.argv[1:])
     calc('2%3')
+    with open('logging_tree.txt', mode='w', encoding='utf8') as tree_file:
+        tree_file.write(logging_tree.format.build_description())

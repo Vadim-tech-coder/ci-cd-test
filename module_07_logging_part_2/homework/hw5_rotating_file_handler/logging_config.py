@@ -1,8 +1,10 @@
+import logging.handlers
+
 from handlers import LevelFileHandler
 
 dict_config = {
     "version": 1,
-    "disable_existing_logger": True,
+    "disable_existing_logger": False,
     "formatters":{
         "base":{
             "format": "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s"
@@ -27,12 +29,26 @@ dict_config = {
             "filename": "calc_error.log",
             "mode": "a",
             "formatter":"base"
+        },
+
+        "file_info":{
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "INFO",
+            "filename": "utils.log",
+            "formatter":"base",
+            "when":"s",
+            "interval": 10,
+            "backupCount": 5
         }
     },
     "loggers":{
         "diff_logger":{
             "level": "DEBUG",
-            "handlers": ["file_debug", "file_error", "console"]
+            "handlers": ["console", "file_info"]
+            },
+        "info_logger":{
+            "level": "INFO",
+            "handlers": ["console", "file_info"]
             }
         }
     }

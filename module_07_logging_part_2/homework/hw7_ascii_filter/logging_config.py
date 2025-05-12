@@ -1,8 +1,15 @@
-from handlers import LevelFileHandler
+import logging.handlers
+
+from handlers import LevelFileHandler, ASCIIFilter
 
 dict_config = {
     "version": 1,
-    "disable_existing_logger": True,
+    "disable_existing_logger": False,
+    "filters": {
+        "ascii_filter": {
+            "()": ASCIIFilter,
+        }
+    },
     "formatters":{
         "base":{
             "format": "%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s"
@@ -12,7 +19,8 @@ dict_config = {
         "console":{
             "class": "logging.StreamHandler",
             "level": "DEBUG",
-            "formatter":"base"
+            "formatter":"base",
+            "filters": ["ascii_filter", ]
         },
         "file_debug":{
             "()": LevelFileHandler,
@@ -27,12 +35,27 @@ dict_config = {
             "filename": "calc_error.log",
             "mode": "a",
             "formatter":"base"
+        },
+
+        "file_info":{
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "INFO",
+            "filename": "utils.log",
+            "formatter":"base",
+            "when":"s",
+            "interval": 10,
+            "backupCount": 5,
+            "filters": ["ascii_filter", ]
         }
     },
     "loggers":{
         "diff_logger":{
             "level": "DEBUG",
-            "handlers": ["file_debug", "file_error", "console"]
+            "handlers": ["console", "file_info"]
+            },
+        "info_logger":{
+            "level": "INFO",
+            "handlers": ["console", "file_info"]
             }
         }
     }

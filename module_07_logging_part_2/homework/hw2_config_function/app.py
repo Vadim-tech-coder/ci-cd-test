@@ -1,13 +1,14 @@
 import sys
+from utils import string_to_operator
 import logging
 
-from module_07_logging_part_2.homework.base_code_default.utils import string_to_operator
-
+logging.basicConfig()
 main_logger = logging.getLogger('main_logger')
 main_logger.setLevel('DEBUG')
+main_logger.propagate = False
 
 handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('%(levelname)s - %(module)s - %(message)s'))
+handler.setFormatter(logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(lineno)s | %(message)s'))
 main_logger.addHandler(handler)
 
 

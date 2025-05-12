@@ -1,14 +1,14 @@
-import sys
+from logger_helper import debug_handler, error_handler
+from utils import string_to_operator
 import logging
 
-from module_07_logging_part_2.homework.base_code_default.utils import string_to_operator
 
-main_logger = logging.getLogger('main_logger')
+
+main_logger = logging.getLogger('main')
 main_logger.setLevel('DEBUG')
+main_logger.addHandler(debug_handler)
+main_logger.addHandler(error_handler)
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('%(levelname)s - %(module)s - %(message)s'))
-main_logger.addHandler(handler)
 
 
 def calc(args):
