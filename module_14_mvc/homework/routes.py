@@ -4,7 +4,7 @@ from wtforms import StringField
 from wtforms.validators import InputRequired
 from typing import List
 
-from models import init_db, get_all_books, DATA, add_new_book
+from models import init_db, get_all_books, DATA, add_new_book, get_all_books_for_author
 
 app: Flask = Flask(__name__)
 
@@ -43,6 +43,15 @@ def all_books() -> str:
         'index.html',
         books=get_all_books(),
     )
+
+
+@app.route('/search/<author>')
+def search_all_books_for_author(author: str) -> str:
+    return render_template(
+        'index.html',
+        books=get_all_books_for_author(author),
+    )
+
 
 
 @app.route('/books/form', methods = ['post', 'get'])

@@ -52,6 +52,15 @@ def init_db(initial_records: List[dict]) -> None:
             )
 
 
+def get_all_books_for_author(author:str) -> List[Book]:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM 'table_books' WHERE author LIKE ?", (f'%{author}%', ))
+        all_books = cursor.fetchall()
+        return [Book(*row) for row in all_books]
+
+
+
 def get_all_books() -> List[Book]:
     with sqlite3.connect('table_books.db') as conn:
         cursor: sqlite3.Cursor = conn.cursor()
