@@ -4,7 +4,7 @@ from wtforms import StringField
 from wtforms.validators import InputRequired
 from typing import List
 
-from models import init_db, get_all_books, DATA, add_new_book, get_all_books_for_author
+from models import init_db, get_all_books, DATA, add_new_book, get_all_books_for_author, get_book_by_id
 
 app: Flask = Flask(__name__)
 
@@ -22,6 +22,7 @@ def _get_html_table_for_books(books: List[dict]) -> str:
         <th>ID</td>
         <th>Title</td>
         <th>Author</td>
+        <th>Views</td>
     </tr>
     </thead>
     <tbody>
@@ -31,8 +32,8 @@ def _get_html_table_for_books(books: List[dict]) -> str:
 """
     rows: str = ''
     for book in books:
-        rows += '<tr><td>{id}</tb><td>{title}</tb><td>{author}</tb></tr>'.format(
-            id=book['id'], title=book['title'], author=book['author'],
+        rows += '<tr><td>{id}</tb><td>{title}</tb><td>{author}</tb><td>{views}</tb></tr>'.format(
+            id=book['id'], title=book['title'], author=book['author'], views = book['views'],
         )
     return table.format(books_rows=rows)
 
@@ -50,6 +51,14 @@ def search_all_books_for_author(author: str) -> str:
     return render_template(
         'index.html',
         books=get_all_books_for_author(author),
+    )
+
+
+@app.route('/id/<id>')
+def search_book_by_id(id: int):
+    return render_template(
+        'index.html',
+        books=get_book_by_id(id),
     )
 
 
