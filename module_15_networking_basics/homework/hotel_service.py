@@ -7,7 +7,7 @@ rooms = [
     {"roomId": 2, "floor": 1, "guestNum": 2, "beds": 1, "price": 2500}
     ]
 
-@app.route('/add-room', methods = ['post',])
+@app.route('/rooms', methods = ['post',])
 def add_room():
     """Функция для эндпоинта для добавления номера."""
     try:
@@ -22,7 +22,7 @@ def add_room():
         return jsonify(error = str(err)), 500
 
 
-@app.route('/room', methods = ['get',])
+@app.route('/rooms', methods = ['get',])
 def get_room():
     """Функция для эндпоинта для получение списка всех номеров."""
     try:
@@ -32,7 +32,7 @@ def get_room():
 
 
 
-@app.route('/booking', methods = ['post',])
+@app.route('/bookings', methods = ['post',])
 def book_room():
     """Функция для эндпоинта для бронирования номера, удаляет забронированный номер."""
     try:
