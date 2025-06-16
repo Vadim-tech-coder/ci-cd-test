@@ -4,6 +4,7 @@ from marshmallow import ValidationError
 
 from models import (
     DATA,
+    DATA_AUTHORS,
     get_all_books,
     init_db,
     add_book,
@@ -21,9 +22,11 @@ class BookList(Resource):
 
     def post(self) -> tuple[dict, int]:
         data = request.json
+        print(data)
         schema = BookSchema()
         try:
             book = schema.load(data)
+            print(book)
         except ValidationError as exc:
             return exc.messages, 400
 
@@ -34,5 +37,5 @@ class BookList(Resource):
 api.add_resource(BookList, '/api/books')
 
 if __name__ == '__main__':
-    init_db(initial_records=DATA)
+    init_db(initial_records=DATA, initial_records_of_authors=DATA_AUTHORS)
     app.run(debug=True)
