@@ -18,5 +18,7 @@ class BookSchema(Schema):
             )
 
     @post_load
-    def create_book(self, data: dict, **kwargs) -> Book:
+    def create_book(self, data: dict, **kwargs):
+        if self.partial:
+            return data
         return Book(**data)

@@ -130,7 +130,9 @@ def get_book_by_id(book_id: int) -> Optional[Book]:
         cursor = conn.cursor()
         cursor.execute(
             f"""
-            SELECT * FROM `{BOOKS_TABLE_NAME}` WHERE id = ?
+            SELECT *
+            FROM `{BOOKS_TABLE_NAME}` 
+            WHERE id = ?
             """,
             (book_id,)
         )
