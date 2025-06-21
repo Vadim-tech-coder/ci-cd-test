@@ -1,6 +1,12 @@
+from typing import Tuple, List, Dict
+
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
+from flasgger import APISpec, Swagger, swag_from
 from flask import Flask, request
 from flask_restful import Api, Resource
 from marshmallow import ValidationError
+from werkzeug.serving import WSGIRequestHandler
 
 from models import (
     DATA,
@@ -16,12 +22,53 @@ app = Flask(__name__)
 api = Api(app)
 
 
+spec = APISpec(
+    title='BooksList',
+    version='1.0.0',
+    openapi_version='2.0',
+    plugins=[
+        FlaskPlugin(),
+        MarshmallowPlugin(),
+    ],
+)
+
 class BookList(Resource):
+    @swag_from('get_doc.yml')
     def get(self) -> tuple[list[dict], int]:
+        # """
+        # This is an endpoint for obtaining the books list.
+        # ---
+        # tags:
+        #   - books
+        # responses:
+        #   200:
+        #     description: Books data
+        #     schema:
+        #       type: array
+        #       items:
+        #         $ref: '#/definitions/Book'
+        # """
         schema = BookSchema()
         return schema.dump(get_all_books(), many=True), 200
 
+    @swag_from('post_doc.yml')
     def post(self) -> tuple[dict, int]:
+        # """
+        # This is an endpoint for book creation.
+        # ---
+        # tags:
+        #  - books
+        # parameters:
+        #  - in: body
+        #    name: new book params
+        #    schema:
+        #      $ref: '#/definitions/Book'
+        # responses:
+        #  201:
+        #    description: The book has been created
+        #    schema:
+        #      $ref: '#/definitions/Book'
+        #         """
         data = request.json
         print(data)
         schema = BookSchema()
@@ -36,11 +83,54 @@ class BookList(Resource):
 
 api.add_resource(BookList, '/api/books')
 
+specs_dict_get = {
+    "description": "This is an endpoint for obtaining the authors list.\nIn this example the specification is taken from dictionary.",
+    "tags": ["authors"],
+    "responses":{
+        "200": {
+            "description": "Authors Data",
+            "schema": {
+                "type": "array",
+                "items":{
+                    "$ref": "#/definitions/Book"
+                        },
+                      }
+                }
+                }
+            }
+
+
+specs_dict_post = {
+    "description": "This is an endpoint for creating a new author.\nIn this example the specification is taken from dictionary.",
+    "tags": ["authors"],
+    "parameters":[
+        {
+        "in": "body",
+        "name": "new author params",
+        "description": "Author object to be created",
+        "schema": {
+            "$ref": "#/definitions/Author"
+                    }
+        }
+                ],
+    "responses":{
+        "201": {
+            "description": "The author has been created",
+            "schema": {
+                "$ref": "#/definitions/Author"
+                        },
+                }
+            }
+        }
+
+
 class AuthorList(Resource):
+    @swag_from(specs_dict_get)
     def get(self) -> tuple[list[dict], int]:
         schema = AuthorSchema()
         return schema.dump(get_all_authors(), many=True), 200
 
+    @swag_from(specs_dict_post)
     def post(self) -> tuple[dict, int]:
         data = request.json
         print(data)
@@ -56,7 +146,6 @@ class AuthorList(Resource):
 
 
 api.add_resource(AuthorList, '/api/authors')
-
 
 
 class Book(Resource):
@@ -116,6 +205,14 @@ class Author(Resource):
 
 
 api.add_resource(Author, '/api/authors/<int:author_id>')
+
+
+template = spec.to_flasgger(
+    app,
+    definitions=[BookSchema, AuthorSchema],
+)
+
+swagger = Swagger(app, template=template)
 
 if __name__ == '__main__':
     init_db(initial_records=DATA, initial_records_of_authors=DATA_AUTHORS)
