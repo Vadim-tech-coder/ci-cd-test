@@ -216,4 +216,5 @@ swagger = Swagger(app, template=template)
 
 if __name__ == '__main__':
     init_db(initial_records=DATA, initial_records_of_authors=DATA_AUTHORS)
+    WSGIRequestHandler.protocol_version = "HTTP/1.0"
     app.run(debug=True)
