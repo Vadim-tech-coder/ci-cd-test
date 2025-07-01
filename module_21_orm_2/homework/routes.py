@@ -1,9 +1,11 @@
 import calendar
+import csv
 from datetime import datetime, date
 from flask import Flask, request, jsonify
 from sqlalchemy import func
 
 from module_21_orm_2.homework.library_models import Base, engine, session, Book, ReceivedBooks, Student
+from module_21_orm_2.homework.utils import str_to_bool
 
 app = Flask(__name__)
 
@@ -92,6 +94,25 @@ def get_10_most_reading_students():
     for student in count_by_students:
         student_list.append(student.to_json())
     return jsonify(student_list=student_list), 200
+
+
+@app.route('/load_csv_file/<string:filepath>', methods = ['GET'])
+def load_csv_file(filepath):
+    """
+     Функция для пакетной записи данных из csv файла в БД.
+    """
+    try:
+        with open(file=filepath) as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=';')
+            array_to_insert = []
+            for row in reader:
+                row['scholarship'] = str_to_bool(row['scholarship'])
+                array_to_insert.append(row)
+            session.bulk_insert_mappings(Student, array_to_insert)
+            session.commit()
+            return f"Данные из файла успешно записаны в БД", 200
+    except FileNotFoundError as exc:
+        return f"Файл не найден, детали: {str(exc)}", 404
 
 
 @app.route('/popular_book', methods = ['GET'])
