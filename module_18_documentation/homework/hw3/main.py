@@ -1,4 +1,6 @@
 import operator
+
+from flasgger import swag_from, Swagger
 from flask import Flask
 from flask_jsonrpc import JSONRPC
 
@@ -131,6 +133,41 @@ def divide(a: float, b: float) -> float:
         return operator.truediv(a, b)
     except ZeroDivisionError as exc:
         return 0.0
+
+@jsonrpc.method('calc.substract')
+def substract(a: float, b: float) -> float:
+    """
+    This is an endpoint for calculation of result = number1 - number2.
+    ---
+    tags:
+      - calculator
+    parameters:
+      - in: body
+        name: new calculation params
+        schema:
+          $ref: '#/definitions/Book'
+          responses:
+            201:
+              description: The book has been created
+              schema:
+              $ref: '#/definitions/Book'
+    """
+    return operator.sub(a, b)
+
+
+@jsonrpc.method('calc.multiply')
+@swag_from('docs/multiply.yml')
+def multiply(a: float, b: float) -> float:
+    return operator.mul(a, b)
+
+
+@jsonrpc.method('calc.divide')
+def divide(a: float, b: float) -> float:
+    try:
+        return operator.truediv(a, b)
+    except ZeroDivisionError as exc:
+        raise ValueError("Division by zero is not allowed")
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True)
