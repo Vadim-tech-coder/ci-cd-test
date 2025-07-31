@@ -14,7 +14,8 @@ async def get_cat(client: aiohttp.ClientSession, idx: int) -> bytes:
     async with client.get(URL) as response:
         print(response.status)
         result = await response.read()
-        await write_to_disk(result, idx)
+        filepath = str(OUT_PATH) + "/" + str(idx) + '.png'
+        await asyncio.to_thread(write_file, result, filepath)
 
 
 def write_file(content: bytes, filepath:str):
@@ -24,7 +25,7 @@ def write_file(content: bytes, filepath:str):
 
 async def write_to_disk(content: bytes, id: int):
     file_path = "{}/{}.png".format(OUT_PATH, id)
-    await asyncio.to_thread(write_file, content, file_path)
+    await asyncio.to_thread(write_file, content, id)
 
 
 async def get_all_cats():
