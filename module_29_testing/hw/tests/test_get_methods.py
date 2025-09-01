@@ -1,5 +1,8 @@
 import pytest
 from datetime import datetime
+from main.models import Client, Parking
+from tests.factories import ClientFactory, ParkingFactory
+
 
 @pytest.mark.parametrize("url", [
     "/clients",
@@ -25,6 +28,25 @@ def test_create_client(client, _db):
     created_client = _db.session.query(Client).filter_by(name="John", surname="Doe").first()
     assert created_client is not None
     assert created_client.credit_card == data["credit_card"]
+
+def test_create_client_from_factory(_db):
+    count_before = _db.session.query(Client).count()
+    client = ClientFactory()
+    _db.session.commit()
+    count_after = _db.session.query(Client).count()
+
+    assert client.id is not None
+    assert count_after == count_before + 1
+
+
+def test_create_parking_from_factory(_db):
+    count_before = _db.session.query(Parking).count()
+    parking = ParkingFactory()
+    _db.session.commit()
+    count_after = _db.session.query(Parking).count()
+
+    assert parking.id is not None
+    assert count_after == count_before + 1
 
 
 def test_create_parking(client, _db):

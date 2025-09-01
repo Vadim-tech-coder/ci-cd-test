@@ -23,9 +23,9 @@ def create_app():
             db.create_all()
             first_request_done = True
 
-    @app.teardown_appcontext
-    def shutdown_session(exception=None):
-        db.session.remove()
+    # @app.teardown_appcontext
+    # def shutdown_session(exception=None):
+    #     db.session.remove()
 
     @app.route("/clients", methods=['POST'])
     def create_client_handler():
