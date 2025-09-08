@@ -1,10 +1,10 @@
+from contextlib import asynccontextmanager
 from typing import List
-from fastapi.testclient import TestClient
-from fastapi import FastAPI, Depends, HTTPException, Path
+
+from fastapi import Depends, FastAPI, HTTPException, Path
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from contextlib import asynccontextmanager
 
 import models
 import schemas
@@ -18,11 +18,17 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(models.Base.metadata.create_all)
     yield
     # Код, выполняющийся при завершении приложения
-    session = Depends(get_session())
+    session = Depends(get_session)
     await session.close()
     await engine.dispose()
 
-app = FastAPI(title="Recepi API", description="API для работы с рецептами", version="1.0", lifespan=lifespan)
+
+app = FastAPI(
+    title="Recepi API",
+    description="API для работы с рецептами",
+    version="1.0",
+    lifespan=lifespan,
+)
 
 # @app.on_event("startup")
 # async def startup():
@@ -36,10 +42,16 @@ app = FastAPI(title="Recepi API", description="API для работы с рец
 #     await engine.dispose()
 
 
-@app.post('/recipes/', response_model=schemas.RecipeOut, status_code=201,
-          summary = "Создать новый рецепт",
-          description="Создает новый рецепт на основе введенных данных")
-async def add_recipe(recipe: schemas.RecipeIn, session: AsyncSession = Depends(get_session)) -> models.Recipe:
+@app.post(
+    "/recipes/",
+    response_model=schemas.RecipeOut,
+    status_code=201,
+    summary="Создать новый рецепт",
+    description="Создает новый рецепт на основе введенных данных",
+)
+async def add_recipe(
+    recipe: schemas.RecipeIn, session: AsyncSession = Depends(get_session)  # noqa
+) -> models.Recipe:
     """
     Создает рецепт и возвращает его с присвоенным ID и начальным view_count = 0
     """
@@ -49,22 +61,38 @@ async def add_recipe(recipe: schemas.RecipeIn, session: AsyncSession = Depends(g
     return new_recipe
 
 
-@app.get('/recipes/', response_model=List[schemas.ListRecipeOut],
-         summary="Получить список всех рецептов",
-         description="Возвращает список всех рецептов, отсортированных по количеству просмотров и времени приготовления.")
-async def get_recipes(session: AsyncSession = Depends(get_session)) -> List[models.Recipe]:
+@app.get(
+    "/recipes/",
+    response_model=List[schemas.ListRecipeOut],
+    summary="Получить список всех рецептов",
+    description="Возвращает список всех рецептов, "
+                "отсортированных по количеству просмотров "
+                "и времени приготовления.",
+)
+async def get_recipes(
+    session: AsyncSession = Depends(get_session),  # noqa
+) -> List[models.Recipe]:
     """
     Функция делает запрос в БД всех рецептов и возвращает список рецептов.
     """
-    stmt = select(models.Recipe).order_by(models.Recipe.view_count.desc(), models.Recipe.preparing_time_in_min.asc())
+    stmt = select(models.Recipe).order_by(
+        models.Recipe.view_count.desc(),
+        models.Recipe.preparing_time_in_min.asc()
+    )
     res = await session.execute(stmt)
-    return res.scalars().all()
+    return list(res.scalars().all())
 
-@app.get('/recipes/{idx}', response_model=schemas.OneRecipeOut,
-         summary="Получить рецепт по ID",
-         description="Возвращает рецепт по уникальному идентификатору")
-async def get_recipe_by_id(idx: int = Path(..., description="Уникальный идентификатор рецепта", ge=1),
-                           session: AsyncSession = Depends(get_session)):
+
+@app.get(
+    "/recipes/{idx}",
+    response_model=schemas.OneRecipeOut,
+    summary="Получить рецепт по ID",
+    description="Возвращает рецепт по уникальному идентификатору",
+)
+async def get_recipe_by_id(
+    idx: int = Path(..., description="Уникальный идентификатор рецепта", ge=1),  # noqa
+    session: AsyncSession = Depends(get_session),  # noqa
+):
     """
     Функция делает выборку из БД по уникальному ID рецепта.
     Если рецепт найден, то увеличивает значение в колонке view_count.
@@ -76,7 +104,10 @@ async def get_recipe_by_id(idx: int = Path(..., description="Уникальны�
     if record is None:
         raise HTTPException(status_code=404, detail="Recipe not found")
     views = record.view_count + 1
-    upd_stmt = update(models.Recipe).where(models.Recipe.id == idx).values(view_count = views)
+    upd_stmt = (
+        update(models.Recipe).where(models.Recipe.id == idx).
+        values(view_count=views)
+    )
     await session.execute(upd_stmt)
     await session.commit()
     return record
