@@ -11,8 +11,6 @@ on:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
-    container:
-      image: python:3.12
 
     steps:
       - uses: actions/checkout@v3
@@ -20,13 +18,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.7'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Run pytests
-        run: pytest
+        run: pytest --maxfail=1 --disable-warnings -q
 
       - name: run MyPy code check
         run: mypy
