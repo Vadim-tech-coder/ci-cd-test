@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from database import Base
+from hw1.database import Base
 
 
 class Recipe(Base):
