@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.7
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version:'3.7'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pytests
+        run: pytest
+
+      - name: run MyPy code check
+        run: mypy
+
+      - name: run Black code checks
+        run: black --diff --check
+
+      - name: run isort checks
+        run: isort --check-only
+
+      - name: Run Flake8
+        run: flake8
