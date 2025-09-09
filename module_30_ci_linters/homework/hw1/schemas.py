@@ -26,15 +26,14 @@ class BaseRecipe(BaseModel):
     view_count: int = Field(
         ...,
         description="Количество просмотров рецепта, "
-                    "увеличивается при просмотре рецепта",
+        "увеличивается при просмотре рецепта",
         json_schema_extra={"example": 5},
     )
 
     model_config = ConfigDict(from_attributes=True)
 
 
-class RecipeIn(BaseRecipe):
-    ...
+class RecipeIn(BaseRecipe): ...
 
 
 class OneRecipeOut(BaseModel):
@@ -72,7 +71,7 @@ class ListRecipeOut(BaseModel):
     view_count: int = Field(
         ...,
         description="Количество просмотров рецепта, "
-                    "увеличивается при просмотре рецепта",
+        "увеличивается при просмотре рецепта",
         json_schema_extra={"example": 5},
     )
     preparing_time_in_min: int = Field(

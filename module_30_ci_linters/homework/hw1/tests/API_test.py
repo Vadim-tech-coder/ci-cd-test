@@ -24,7 +24,9 @@ def setup_database():
     async def drop_tables():
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
+
     asyncio.run(drop_tables())
+
 
 def test_add_recipe():
     # Пример входных данных, соответствующих schemas.RecipeIn

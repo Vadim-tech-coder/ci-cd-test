@@ -67,8 +67,8 @@ async def add_recipe(
     response_model=List[schemas.ListRecipeOut],
     summary="Получить список всех рецептов",
     description="Возвращает список всех рецептов, "
-                "отсортированных по количеству просмотров "
-                "и времени приготовления.",
+    "отсортированных по количеству просмотров "
+    "и времени приготовления.",
 )
 async def get_recipes(
     session: AsyncSession = Depends(get_session),  # noqa
@@ -77,8 +77,7 @@ async def get_recipes(
     Функция делает запрос в БД всех рецептов и возвращает список рецептов.
     """
     stmt = select(models.Recipe).order_by(
-        models.Recipe.view_count.desc(),
-        models.Recipe.preparing_time_in_min.asc()
+        models.Recipe.view_count.desc(), models.Recipe.preparing_time_in_min.asc()
     )
     res = await session.execute(stmt)
     return list(res.scalars().all())
@@ -106,8 +105,7 @@ async def get_recipe_by_id(
         raise HTTPException(status_code=404, detail="Recipe not found")
     views = record.view_count + 1
     upd_stmt = (
-        update(models.Recipe).where(models.Recipe.id == idx).
-        values(view_count=views)
+        update(models.Recipe).where(models.Recipe.id == idx).values(view_count=views)
     )
     await session.execute(upd_stmt)
     await session.commit()
