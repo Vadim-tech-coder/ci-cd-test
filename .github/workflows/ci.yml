@@ -27,13 +27,13 @@ jobs:
         run: pytest --maxfail=1 --disable-warnings -q
 
       - name: run MyPy code check
-        run: mypy
+        run: mypy .
 
       - name: run Black code checks
-        run: black --diff --check
+        run: black --diff --check .
 
       - name: run isort checks
-        run: isort --check-only
+        run: isort --check-only .
 
       - name: Run Flake8
         run: flake8
