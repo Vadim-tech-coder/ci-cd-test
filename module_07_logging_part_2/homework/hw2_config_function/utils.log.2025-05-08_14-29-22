@@ -1,5 +1,0 @@
-INFO | info_logger.utils | 2025-05-08 14:29:22,609 | 37 | utils_logger INFO
-WARNING | info_logger.utils | 2025-05-08 14:29:22,611 | 38 | utils_logger WARNING
-ERROR | info_logger.utils | 2025-05-08 14:29:22,611 | 40 | utils_logger ERROR
-CRITICAL | info_logger.utils | 2025-05-08 14:29:22,611 | 41 | utils_logger CRITICAL
-ERROR | info_logger.utils | 2025-05-08 14:29:22,611 | 50 | wrong operator value: %
