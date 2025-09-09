@@ -27,13 +27,13 @@ jobs:
         run: pytest --maxfail=1 --disable-warnings -q
 
       - name: run MyPy code check
-        run: mypy /homework
+        run: mypy /module_30_ci_linters/homework
 
       - name: run Black code checks
-        run: black --diff --check /homework
+        run: black --diff --check /module_30_ci_linters/homework
 
       - name: run isort checks
-        run: isort --check-only /homework
+        run: isort --check-only /module_30_ci_linters/homework
 
       - name: Run Flake8
-        run: flake8 /homework
+        run: flake8 /module_30_ci_linters/homework
