@@ -6,7 +6,7 @@ from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from math import radians
+import random
 from hw1 import models
 from hw1 import schemas
 from hw1.database import engine, get_session
