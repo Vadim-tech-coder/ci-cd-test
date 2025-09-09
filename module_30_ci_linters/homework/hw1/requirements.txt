@@ -9,3 +9,4 @@ freezegun
 fastapi
 httpx
 sqlalchemy
+aiosqlite
