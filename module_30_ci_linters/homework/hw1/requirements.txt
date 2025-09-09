@@ -6,3 +6,4 @@ flake8-pie
 isort
 mypy
 freezegun
+fastapi
