@@ -1,9 +1,30 @@
-from fastapi.testclient import TestClient
+import asyncio
 
+from fastapi.testclient import TestClient
+import pytest
 from hw1.main import app
+from hw1.database import engine
+from hw1.models import Base
 
 client = TestClient(app)
 
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_database():
+    # Асинхронная функция создания таблиц
+    async def create_tables():
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+
+    # Запускаем создание таблиц перед тестами
+    asyncio.run(create_tables())
+
+    yield
+
+    async def drop_tables():
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.drop_all)
+    asyncio.run(drop_tables())
 
 def test_add_recipe():
     # Пример входных данных, соответствующих schemas.RecipeIn
