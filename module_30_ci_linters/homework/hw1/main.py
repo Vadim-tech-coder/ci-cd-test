@@ -1,3 +1,4 @@
+import random
 from contextlib import asynccontextmanager
 from typing import List
 
@@ -6,9 +7,7 @@ from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-import random
-from hw1 import models
-from hw1 import schemas
+from hw1 import models, schemas
 from hw1.database import engine, get_session
 
 

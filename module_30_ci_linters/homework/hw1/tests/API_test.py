@@ -1,9 +1,10 @@
 import asyncio
 
-from fastapi.testclient import TestClient
 import pytest
-from hw1.main import app
+from fastapi.testclient import TestClient
+
 from hw1.database import engine
+from hw1.main import app
 from hw1.models import Base
 
 client = TestClient(app)
