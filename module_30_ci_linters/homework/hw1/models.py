@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String
-
 from hw1.database import Base
+from sqlalchemy import Column, Integer, String
 
 
 class Recipe(Base):

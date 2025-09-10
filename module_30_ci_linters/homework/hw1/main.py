@@ -3,12 +3,11 @@ from contextlib import asynccontextmanager
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException, Path
+from hw1 import models, schemas
+from hw1.database import engine, get_session
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-
-from hw1 import models, schemas
-from hw1.database import engine, get_session
 
 
 @asynccontextmanager
