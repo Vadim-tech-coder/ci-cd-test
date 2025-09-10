@@ -33,7 +33,8 @@ class BaseRecipe(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class RecipeIn(BaseRecipe): ...
+class RecipeIn(BaseRecipe):
+    ...
 
 
 class OneRecipeOut(BaseModel):
