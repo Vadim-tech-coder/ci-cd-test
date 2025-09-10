@@ -33,7 +33,7 @@ jobs:
         run: black --diff --check module_30_ci_linters/homework
 
       - name: run isort checks
-        run: isort --check-only module_30_ci_linters/homework
+        run: isort --check-only --profile black module_30_ci_linters/homework
 
       - name: Run Flake8
         run: flake8 module_30_ci_linters/homework
