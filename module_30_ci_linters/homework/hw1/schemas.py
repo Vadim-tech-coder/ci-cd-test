@@ -34,7 +34,7 @@ class BaseRecipe(BaseModel):
 
 
 class RecipeIn(BaseRecipe):
-    ...
+    pass
 
 
 class OneRecipeOut(BaseModel):
