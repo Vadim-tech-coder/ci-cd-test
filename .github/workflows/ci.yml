@@ -24,7 +24,7 @@ jobs:
         run: pip install -r module_30_ci_linters/homework/hw1/requirements.txt
 
       - name: Run pytests
-        run: pytest --maxfail=1 --disable-warnings -q
+        run: pytest --maxfail=1 --disable-warnings -q module_30_ci_linters/homework/hw1/tests
 
       - name: run MyPy code check
         run: mypy module_30_ci_linters/homework
