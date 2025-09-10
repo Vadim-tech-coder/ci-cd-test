@@ -1,0 +1,25 @@
+post:
+  tags:
+    - Books
+  summary: "Add a new book."
+  description: "Create a new book in table with provided data in json format."
+  parameters:
+    - in: body
+      name: book
+      description: "Book to create"
+      required: true
+      schema:
+        $ref: '#/definitions/Book'
+  responses:
+    201:
+      description: "Book created successfully."
+      schema:
+        $ref: '#/definitions/Book'
+    400:
+      description: "Validation Error"
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            example: "Book with title already exists, please use a different title."
